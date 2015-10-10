@@ -41,6 +41,17 @@ def main():
         else:
             return in_data, pyaudio.paComplete
 
+    
+    #PLACEHOLDERS FOR SPOTIFY FUNCTIONS
+    def get_song(spotify_key, song_name):
+        pass
+
+    def get_playlist(spotify_key, user_ID, playlist_ID):
+        pass
+
+    def say(response):
+        os.system(("echo %s |espeak" % response))
+
     p = pyaudio.PyAudio()
 
     stream = p.open(format=FORMAT,
@@ -52,12 +63,18 @@ def main():
                     stream_callback=callback)
     exit is False
 
+    print ("-----------------------------------------------------------------")
+    print ("J.A.C.O.B - Digital Assistant Series - Mark II")
+    print ()
+    print ("Added features from MK I - Speech to Text, Spotify integration")
+    print ("-----------------------------------------------------------------")
     while exit is False:
         begin_speech = input("Press enter to speak. ")
 
+        need_for_speech = False
         stream.start_stream()
 
-        print ("Say!")
+        print ("---------------------------!Speak!----------------------------")
 
         try:
             while stream.is_active():
@@ -79,9 +96,28 @@ def main():
         print(json_obj["result"]["resolvedQuery"])
         print(json_obj["result"]["fulfillment"]["speech"])
         jacob_response = json_obj["result"]["fulfillment"]["speech"]
+        ###ADD SEARCH VARIABLE SO JACOB KNOWS WHEN TO SPEAK OR NAH
 
-        os.system(("echo %s |espeak" % jacob_response))
+        ##UNTIL THEN:
+        need_for_speech is True
+
+        if need_for_speech is True: 
+           say(jacob_response)
         #print (response.read())
 
 if __name__ == '__main__':
     main()
+
+"""
+EXTRA:
+
+    def what_do(a, b, p1, p2):
+        x = (a/(a+b))*(m/p1)
+        y = (b/(a+b))*(m/p2)
+
+    def set_reminder(name, time):
+        now = datetime.datetime.now()
+        
+        pass
+
+"""
