@@ -50,34 +50,38 @@ def main():
                     output=False,
                     frames_per_buffer=CHUNK,
                     stream_callback=callback)
+    exit is False
 
-    stream.start_stream()
+    while exit is False:
+        begin_speech = input("Press enter to speak. ")
 
-    print ("Say!")
+        stream.start_stream()
 
-    try:
-        while stream.is_active():
-            time.sleep(0.1)
-    except Exception:
-        raise e
-    except KeyboardInterrupt:
-        pass
+        print ("Say!")
 
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
+        try:
+            while stream.is_active():
+                time.sleep(0.1)
+        except Exception:
+            raise e
+        except KeyboardInterrupt:
+            pass
 
-    print ("Wait for response...")
-    response = request.getresponse()
+        stream.stop_stream()
+        stream.close()
+        p.terminate()
 
-    string = response.read().decode('utf-8')
-    json_obj = json.loads(string)
-    print(json_obj["result"]["resolvedQuery"])
-    print(json_obj["result"]["fulfillment"]["speech"])
-    jacob_response = json_obj["result"]["fulfillment"]["speech"]
-    os_command = "echo \"{}\" |espeak".format(jacob_response)
-    os.system(os_command)
-    #print (response.read())
+        print ("Wait for response...")
+        response = request.getresponse()
+
+        string = response.read().decode('utf-8')
+        json_obj = json.loads(string)
+        print(json_obj["result"]["resolvedQuery"])
+        print(json_obj["result"]["fulfillment"]["speech"])
+        jacob_response = json_obj["result"]["fulfillment"]["speech"]
+
+        os.system(("echo %s |espeak" % jacob_response))
+        #print (response.read())
 
 if __name__ == '__main__':
     main()
